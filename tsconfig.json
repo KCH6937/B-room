@@ -22,10 +22,11 @@
       "@controllers/*": ["src/controllers/*"],
       "@services/*": ["src/services/*"],
       "@config/*": ["src/config/*"],
-      "@entity/*": ["src/entity/*"],
+      "@entities/*": ["src/entities/*"],
       "@routes/*": ["src/routes/*"],
       "@interfaces/*": ["src/interfaces/*"],
-      "@modules/*": ["src/modules/*"]
+      "@modules/*": ["src/modules/*"],
+      "@middlewares/*": ["src/middlwares/*"]
     },
     "strictPropertyInitialization": false
   },
