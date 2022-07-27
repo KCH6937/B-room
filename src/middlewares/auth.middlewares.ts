@@ -6,7 +6,7 @@ import message from '@modules/message';
 
 const authJWT = (req: Request, res: Response, next: NextFunction) => {
   let token: string = '';
-  if (!req.headers['authorization']) {
+  if (req.headers['authorization']) {
     token = req.headers['authorization']!.split('Bearer ').reverse()[0];
   }
 
