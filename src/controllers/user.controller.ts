@@ -1,6 +1,5 @@
 import { Request, Response } from 'express';
 import { fail } from '@modules/response';
-import statusCode from '@modules/statusCode';
 import userService from '@services/user/user.service';
 
 const register = async (req: Request, res: Response) => {
