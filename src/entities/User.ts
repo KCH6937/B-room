@@ -1,21 +1,21 @@
-import { Team } from './Team';
-import { Holiday } from './Holiday';
-import { Notice } from './Notice';
-import { Commute } from './Commute';
 import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
   OneToMany,
   ManyToOne,
-  JoinColumn
+  DeleteDateColumn
 } from 'typeorm';
+import { CompanyDepartment } from './CompanyDepartment';
+import { Holiday } from './Holiday';
+import { CompanyNotice } from './CompanyNotice';
+import { TimeLog } from './TimeLog';
 import { DateEntity } from './DateEntity';
 
 @Entity()
 export class User extends DateEntity {
   @PrimaryGeneratedColumn()
-  userId: number;
+  id: number;
 
   @Column({ length: 45 })
   name: string;
@@ -23,22 +23,27 @@ export class User extends DateEntity {
   @Column({ length: 45, unique: true })
   email: string;
 
-  @Column({ type: 'tinytext' })
+  @Column({ type: 'text' })
   password: string;
 
   @Column({ type: 'tinyint', width: 1, default: 0 })
   authority: boolean;
 
-  @OneToMany(() => Commute, commute => commute.user)
-  commutes: Commute[];
+  @OneToMany(() => TimeLog, timelog => timelog.user)
+  timelogs: TimeLog[];
 
-  @OneToMany(() => Notice, notice => notice.user)
-  notices: Notice[];
+  @OneToMany(() => CompanyNotice, companyNotice => companyNotice.user)
+  companyNotices: CompanyNotice[];
 
   @OneToMany(() => Holiday, hoilyday => hoilyday.user)
   holidays: Holiday[];
 
-  @ManyToOne(() => Team, team => team.users)
-  @JoinColumn({ name: 'teamId' })
-  team: Team;
+  @ManyToOne(
+    () => CompanyDepartment,
+    companyDepartment => companyDepartment.users
+  )
+  companyDepartment: CompanyDepartment;
+
+  @DeleteDateColumn({ type: 'timestamp' })
+  deletedAt?: Date;
 }
