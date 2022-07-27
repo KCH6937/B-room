@@ -14,6 +14,7 @@ const getAllDepartment = async () => {
   try {
     const result = await userRepository
       .createQueryBuilder('u')
+      .orderBy('d.id', 'ASC')
       .select(['u.id', 'u.name', 'd.id', 'd.name'])
       .leftJoin('u.companyDepartment', 'd')
       .getMany();
@@ -32,6 +33,7 @@ const getDepartment = async (request: any) => {
   try {
     const result = await userRepository
       .createQueryBuilder('u')
+      .orderBy('u.id', 'ASC')
       .select(['u.id', 'u.name', 'd.id', 'd.name'])
       .leftJoin('u.companyDepartment', 'd')
       .where('d.id = :id', { id: departmentId })
@@ -90,10 +92,35 @@ const updateDepartment = async (request: any) => {
     );
   }
 };
+const deleteDepartment = async (request: any) => {
+  const { id: departmentId }: DepartmentDto = request.params;
+  console.log('departmentId: ', departmentId);
+
+  try {
+    const result = await departmentRepository
+      .createQueryBuilder()
+      .delete()
+      .from(CompanyDepartment)
+      .where('id = :id', { id: departmentId })
+      .execute();
+
+    console.log('result: ', result);
+    return success(statusCode.OK, message.SUCCESS);
+  } catch (error: any) {
+    if (error.errno === 1451) {
+      return setError(statusCode.DB_ERROR, message.BAD_REQUEST);
+    }
+    return setError(
+      statusCode.INTERAL_SERVER_ERROR,
+      message.INTERNAL_SERVER_ERROR
+    );
+  }
+};
 
 export default {
   getAllDepartment,
   getDepartment,
   createDepartment,
-  updateDepartment
+  updateDepartment,
+  deleteDepartment
 };
