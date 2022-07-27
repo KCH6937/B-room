@@ -42,7 +42,7 @@ export class User extends DateEntity {
     () => CompanyDepartment,
     companyDepartment => companyDepartment.users
   )
-  companyDepartment: CompanyDepartment;
+  companyDepartmentId: CompanyDepartment['id'];
 
   @DeleteDateColumn({ type: 'timestamp' })
   deletedAt?: Date;
