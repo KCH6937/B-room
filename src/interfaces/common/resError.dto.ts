@@ -1,4 +1,4 @@
 export interface ResError {
-  statusCode: number;
+  statusCode?: number;
   message: string;
 }

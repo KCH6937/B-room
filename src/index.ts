@@ -10,7 +10,8 @@ AppDataSource.initialize()
     app.use(express.urlencoded({ extended: true }));
     app.use(express.json());
 
-    app.use('/v1', routes);
+    app.use('/api', routes);
+
     app
       .listen(process.env.PORT, () => {
         console.log(
