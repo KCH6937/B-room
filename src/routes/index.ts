@@ -1,9 +1,9 @@
 import { Router } from 'express';
-import TestRouter from '@routes/test.route';
 import departmentRouter from '@routes/department/department.route';
+import companyNoticeRouter from '@routes/companyNotice/companyNotice.route';
 
 const router = Router();
-router.use('/test', TestRouter);
 router.use('/department', departmentRouter);
+router.use('/notices', companyNoticeRouter);
 
 export default router;
