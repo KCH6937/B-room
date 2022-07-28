@@ -40,7 +40,7 @@ const register = async (userDto: UserDto) => {
     await AppDataSource.createQueryBuilder()
       .insert()
       .into(User)
-      .values([userDto])
+      .values(userDto)
       .execute();
 
     return success(statusCode.OK, message.SUCCESS);
@@ -82,7 +82,67 @@ const login = async (userDto: UserDto) => {
   }
 };
 
+const editUser = async (userDto: UserDto) => {
+  const { id, email, password, department } = userDto;
+
+  try {
+    const user: User | null = await AppDataSource.createQueryBuilder()
+      .select('user')
+      .from(User, 'user')
+      .where('user.id = :id', { id })
+      .getOne();
+
+    if (!user) {
+      return setError(statusCode.BAD_REQUEST, message.INVALID_USER_INFO);
+    }
+
+    await AppDataSource.createQueryBuilder()
+      .update(User)
+      .set(userDto)
+      .where('user.id = :id', { id })
+      .execute();
+
+    const accessToken = signAccessToken(user.id, user.authority);
+
+    return success(statusCode.OK, message.SUCCESS, accessToken);
+  } catch (error) {
+    return setError(
+      statusCode.SERVICE_UNAVAILABLE,
+      message.INTERNAL_SERVER_ERROR
+    );
+  }
+};
+
+const deleteUser = async (userId: number) => {
+  try {
+    const user: User | null = await AppDataSource.createQueryBuilder()
+      .select('user')
+      .from(User, 'user')
+      .where('user.id = :id', { userId })
+      .getOne();
+
+    if (!user) {
+      return setError(statusCode.BAD_REQUEST, message.INVALID_USER_INFO);
+    }
+
+    await AppDataSource.createQueryBuilder()
+      .softDelete()
+      .from(User, 'user')
+      .where('user.id = :id', { userId })
+      .execute();
+
+    return success(statusCode.OK, message.SUCCESS);
+  } catch (error) {
+    return setError(
+      statusCode.SERVICE_UNAVAILABLE,
+      message.INTERNAL_SERVER_ERROR
+    );
+  }
+};
+
 export default {
   register,
-  login
+  login,
+  editUser,
+  deleteUser
 };

@@ -1,13 +1,13 @@
 import { Request, Response, NextFunction } from 'express';
-import { verifyAccessToken } from '@modules/jwt';
-import { fail } from '@modules/response';
+import { signAccessToken, verifyAccessToken } from '@modules/jwt';
+import { fail, success } from '@modules/response';
 import statusCode from '@modules/statusCode';
 import message from '@modules/message';
 
 const authJWT = (req: Request, res: Response, next: NextFunction) => {
   let token: string = '';
   if (req.headers['authorization']) {
-    token = req.headers['authorization']!.split('Bearer ').reverse()[0];
+    token = req.headers['authorization']!.split('Bearer ')[1];
   }
 
   if (!token) {
@@ -23,11 +23,15 @@ const authJWT = (req: Request, res: Response, next: NextFunction) => {
     req.body.authority = payload.authority;
     next();
   } else {
-    // 토큰 만료
+    // 토큰 만료 시 재발급
     if (payload.message.includes('expired')) {
-      return res
-        .status(statusCode.UNAUTHORIZED)
-        .send(fail(statusCode.UNAUTHORIZED, message.ACCESS_TOKEN_EXPIRES));
+      token = signAccessToken(payload.userId, payload.authority);
+      console.log('토큰 재발급', token);
+      return res.status(statusCode.UNAUTHORIZED).send(
+        success(statusCode.UNAUTHORIZED, message.ACCESS_TOKEN_EXPIRES, {
+          accessToken: token
+        })
+      );
     }
     // 검증 실패
     return res
