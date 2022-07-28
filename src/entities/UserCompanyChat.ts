@@ -1,7 +1,15 @@
 import { CompanyChatRoom } from './CompanyChatRoom';
 import { CompanyChat } from './CompanyChat';
 import { User } from './User';
-import { Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  RelationId
+} from 'typeorm';
 
 @Entity()
 export class UserCompanyChat {
@@ -13,9 +21,9 @@ export class UserCompanyChat {
 
   @ManyToOne(
     () => CompanyChatRoom,
-    companyChatRoom => companyChatRoom.userCompanyChat
+    companyChatRoom => companyChatRoom.userCompanyChats
   )
-  companyChatRooms: CompanyChatRoom[];
+  companyChatRoom: CompanyChatRoom;
 
   @OneToMany(() => CompanyChat, companyChat => companyChat.userCompanyChat)
   companyChats: CompanyChat[];
