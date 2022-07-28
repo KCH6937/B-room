@@ -3,6 +3,8 @@ import { verifyAccessToken } from '@modules/jwt';
 import { fail } from '@modules/response';
 import statusCode from '@modules/statusCode';
 import message from '@modules/message';
+import { User } from '@entities/User';
+import { ROLE } from '@modules/role';
 
 const authJWT = (req: Request, res: Response, next: NextFunction) => {
   let token: string = '';
@@ -19,8 +21,12 @@ const authJWT = (req: Request, res: Response, next: NextFunction) => {
   const payload = verifyAccessToken(token);
 
   if (payload.ok) {
-    req.body.userId = payload.userId;
-    req.body.authority = payload.authority;
+    // todo : 확인 후 수정
+    const user = new User();
+    user.id = payload.userId;
+    user.authority = payload.authority;
+    req.user = user;
+
     next();
   } else {
     // 토큰 만료
@@ -36,4 +42,19 @@ const authJWT = (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
-export default authJWT;
+/**
+ * 관리자 권한 검증
+ */
+const isAuthority = (req: Request, res: Response, next: NextFunction) => {
+  const authority: number = req.user.authority;
+
+  if (authority !== ROLE.ROLE_ADMIN) {
+    return res
+      .status(statusCode.FORBIDDEN)
+      .json(fail(statusCode.FORBIDDEN, message.FORBIDDEN));
+  }
+
+  next();
+};
+
+export default { authJWT, isAuthority };
