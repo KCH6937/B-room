@@ -1,3 +1,4 @@
+import { UserCompanyChat } from './UserCompanyChat';
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -43,6 +44,9 @@ export class User extends DateEntity {
     companyDepartment => companyDepartment.users
   )
   companyDepartmentId: CompanyDepartment['id'];
+
+  @OneToMany(() => UserCompanyChat, userCompanyChat => userCompanyChat.user)
+  userCompanyChats: UserCompanyChat[];
 
   @DeleteDateColumn({ type: 'timestamp' })
   deletedAt?: Date;
