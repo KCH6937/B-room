@@ -7,6 +7,10 @@ const getAllDepartment = async (req: Request, res: Response) => {
   try {
     const result = await departmentService.getAllDepartment();
 
+    if (result instanceof Error) {
+      throw result;
+    }
+
     return res.status(statusCode.OK).send(result);
   } catch (error: any) {
     return res
@@ -17,6 +21,10 @@ const getAllDepartment = async (req: Request, res: Response) => {
 const getDepartment = async (req: Request, res: Response) => {
   try {
     const result = await departmentService.getDepartment(req);
+
+    if (result instanceof Error) {
+      throw result;
+    }
 
     return res.status(statusCode.OK).send(result);
   } catch (error: any) {
@@ -55,26 +63,10 @@ const updateDepartment = async (req: Request, res: Response) => {
       .send(fail(error.statusCode, error.message));
   }
 };
-const deleteDepartment = async (req: Request, res: Response) => {
-  try {
-    const result = await departmentService.deleteDepartment(req);
-
-    if (result instanceof Error) {
-      throw result;
-    }
-
-    return res.status(statusCode.OK).send(result);
-  } catch (error: any) {
-    return res
-      .status(error.statusCode)
-      .send(fail(error.statusCode, error.message));
-  }
-};
 
 export default {
   getAllDepartment,
   getDepartment,
   createDepartment,
-  updateDepartment,
-  deleteDepartment
+  updateDepartment
 };

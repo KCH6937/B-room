@@ -1,11 +1,15 @@
 import { Request, Response } from 'express';
 import { fail } from '@modules/response';
 import statusCode from '@modules/statusCode';
-import testService from '@services/test.service';
+import holidayService from '@services/holiday/holiday.service';
 
-const getTest = async (req: Request, res: Response) => {
+const createHoliday = async (req: Request, res: Response) => {
   try {
-    const result = await testService.getTest();
+    const result = await holidayService.createHoliday(req.body);
+
+    if (result instanceof Error) {
+      throw result;
+    }
 
     return res.status(statusCode.OK).send(result);
   } catch (error: any) {
@@ -16,5 +20,5 @@ const getTest = async (req: Request, res: Response) => {
 };
 
 export default {
-  getTest
+  createHoliday
 };

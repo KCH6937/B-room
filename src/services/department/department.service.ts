@@ -8,6 +8,7 @@ import { User } from '@entities/User';
 import { DepartmentDto } from '@interfaces/department/department.dto';
 
 const departmentRepository = dataSource.getRepository(CompanyDepartment);
+
 const userRepository = dataSource.getRepository(User);
 
 const getAllDepartment = async () => {
@@ -16,8 +17,9 @@ const getAllDepartment = async () => {
       .createQueryBuilder('u')
       .orderBy('d.id', 'ASC')
       .select(['u.id', 'u.name', 'd.id', 'd.name'])
-      .leftJoin('u.companyDepartment', 'd')
+      .leftJoin('u.companyDepartmentId', 'd')
       .getMany();
+    console.log('result: ', result);
 
     return success(statusCode.OK, message.SUCCESS, result);
   } catch (error: any) {
@@ -35,7 +37,7 @@ const getDepartment = async (request: any) => {
       .createQueryBuilder('u')
       .orderBy('u.id', 'ASC')
       .select(['u.id', 'u.name', 'd.id', 'd.name'])
-      .leftJoin('u.companyDepartment', 'd')
+      .leftJoin('u.companyDepartmentId', 'd')
       .where('d.id = :id', { id: departmentId })
       .getMany();
 
@@ -49,6 +51,7 @@ const getDepartment = async (request: any) => {
 };
 const createDepartment = async (requestBody: Object) => {
   const { name }: DepartmentDto = requestBody;
+  //토큰 받아서 관리사 권한 검사
 
   if (name === '' || name == null || name == undefined) {
     return setError(statusCode.NOT_FOUND, message.NULL_VALUE);
@@ -64,7 +67,7 @@ const createDepartment = async (requestBody: Object) => {
       })
       .execute();
 
-    return success(statusCode.OK, message.CREATED, result.generatedMaps);
+    return success(statusCode.CREATED, message.SUCCESS, result.generatedMaps);
   } catch (error: any) {
     return setError(
       statusCode.INTERAL_SERVER_ERROR,
@@ -92,35 +95,10 @@ const updateDepartment = async (request: any) => {
     );
   }
 };
-const deleteDepartment = async (request: any) => {
-  const { id: departmentId }: DepartmentDto = request.params;
-  console.log('departmentId: ', departmentId);
-
-  try {
-    const result = await departmentRepository
-      .createQueryBuilder()
-      .delete()
-      .from(CompanyDepartment)
-      .where('id = :id', { id: departmentId })
-      .execute();
-
-    console.log('result: ', result);
-    return success(statusCode.OK, message.SUCCESS);
-  } catch (error: any) {
-    if (error.errno === 1451) {
-      return setError(statusCode.DB_ERROR, message.BAD_REQUEST);
-    }
-    return setError(
-      statusCode.INTERAL_SERVER_ERROR,
-      message.INTERNAL_SERVER_ERROR
-    );
-  }
-};
 
 export default {
   getAllDepartment,
   getDepartment,
   createDepartment,
-  updateDepartment,
-  deleteDepartment
+  updateDepartment
 };
