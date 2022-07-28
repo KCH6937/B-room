@@ -86,6 +86,7 @@ const getNotices = async () => {
         'companynotice.title',
         'companynotice.createdAt'
       ])
+      .orderBy('companynotice.createdAt', 'DESC')
       .getMany();
 
     return success(statusCode.OK, message.SUCCESS, notices);

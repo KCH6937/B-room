@@ -6,9 +6,8 @@ import companyNoticeService from '@services/companyNotice/companyNotice.service'
 import { Request, Response } from 'express';
 
 const createNotice = async (req: Request, res: Response) => {
-  // WARN : 나중에 userId를 토큰으로 받아서 처리 변경
   const noticeDto: ICompanyNotice = {
-    user: req.user.id,
+    user: req.userInfo.id,
     ...req.body
   };
 

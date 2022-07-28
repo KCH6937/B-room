@@ -21,11 +21,10 @@ const authJWT = (req: Request, res: Response, next: NextFunction) => {
   const payload = verifyAccessToken(token);
 
   if (payload.ok) {
-    // todo : 확인 후 수정
-    const user = new User();
-    user.id = payload.userId;
-    user.authority = payload.authority;
-    req.user = user;
+    const userInfo = new User();
+    userInfo.id = payload.userId;
+    userInfo.authority = payload.authority;
+    req.userInfo = userInfo;
 
     next();
   } else {
@@ -46,7 +45,7 @@ const authJWT = (req: Request, res: Response, next: NextFunction) => {
  * 관리자 권한 검증
  */
 const isAuthority = (req: Request, res: Response, next: NextFunction) => {
-  const authority: number = req.user.authority;
+  const authority: number = req.userInfo.authority;
 
   if (authority !== ROLE.ROLE_ADMIN) {
     return res
