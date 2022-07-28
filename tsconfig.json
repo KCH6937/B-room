@@ -25,7 +25,8 @@
       "@entities/*": ["src/entities/*"],
       "@routes/*": ["src/routes/*"],
       "@interfaces/*": ["src/interfaces/*"],
-      "@modules/*": ["src/modules/*"]
+      "@modules/*": ["src/modules/*"],
+      "@middlewares/*": ["src/middlwares/*"]
     },
     "strictPropertyInitialization": false
   },
