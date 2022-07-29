@@ -1,15 +1,37 @@
-import { InsertResult } from 'typeorm';
-import { success } from '@modules/response';
-import { CreateChatRoomDto } from '@interfaces/companyChat/createChatRoom.dto';
-import setError from '@modules/setError';
 import statusCode from '@modules/statusCode';
+import { success } from '@modules/response';
 import message from '@modules/message';
-import AppDataSource from '@config/data-source';
 import { CompanyChatRoom } from '@entities/CompanyChatRoom';
+import AppDataSource from '@config/data-source';
+import setError from '@modules/setError';
+import { InsertResult } from 'typeorm';
+import { CreateChatRoomDto } from '@interfaces/companyChat/createChatRoom.dto';
 import { UserCompanyChat } from '@entities/UserCompanyChat';
 
 const companyChatRoomRepository = AppDataSource.getRepository(CompanyChatRoom);
 const userCompanyChatRepository = AppDataSource.getRepository(UserCompanyChat);
+
+const getChatRoomsInfo = async () => {
+  try {
+    const chatRooms = await companyChatRoomRepository
+      .createQueryBuilder('companychatroom')
+      .select([
+        'companychatroom.id',
+        'companychatroom.title',
+        'companychatroom.createdAt'
+      ])
+      .orderBy('companychatroom.createdAt', 'DESC')
+      .getMany();
+
+    return success(statusCode.OK, message.SUCCESS, chatRooms);
+  } catch (error: any) {
+    console.log({ message: error.message });
+    return setError(
+      statusCode.INTERAL_SERVER_ERROR,
+      message.INTERNAL_SERVER_ERROR
+    );
+  }
+};
 
 const createChatRoom = async (createChatRoomDto: CreateChatRoomDto) => {
   const { title, userId } = createChatRoomDto;
@@ -46,5 +68,6 @@ const createChatRoom = async (createChatRoomDto: CreateChatRoomDto) => {
 };
 
 export default {
+  getChatRoomsInfo,
   createChatRoom
 };
