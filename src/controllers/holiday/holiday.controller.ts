@@ -1,11 +1,11 @@
-import { Request, Response } from 'express';
+import { request, Request, Response } from 'express';
 import { fail } from '@modules/response';
 import statusCode from '@modules/statusCode';
-import departmentService from '@services/department/department.service';
+import holidayService from '@services/holiday/holiday.service';
 
-const getAllDepartment = async (req: Request, res: Response) => {
+const getAllHoliday = async (req: Request, res: Response) => {
   try {
-    const result = await departmentService.getAllDepartment();
+    const result = await holidayService.getAllHoliday(req);
 
     if (result instanceof Error) {
       throw result;
@@ -18,9 +18,9 @@ const getAllDepartment = async (req: Request, res: Response) => {
       .send(fail(error.statusCode, error.message));
   }
 };
-const getDepartment = async (req: Request, res: Response) => {
+const createHoliday = async (req: Request, res: Response) => {
   try {
-    const result = await departmentService.getDepartment(req);
+    const result = await holidayService.createHoliday(req);
 
     if (result instanceof Error) {
       throw result;
@@ -33,9 +33,9 @@ const getDepartment = async (req: Request, res: Response) => {
       .send(fail(error.statusCode, error.message));
   }
 };
-const createDepartment = async (req: Request, res: Response) => {
+const updateHoliday = async (req: Request, res: Response) => {
   try {
-    const result = await departmentService.createDepartment(req);
+    const result = await holidayService.updateHoliday(req);
 
     if (result instanceof Error) {
       throw result;
@@ -48,9 +48,9 @@ const createDepartment = async (req: Request, res: Response) => {
       .send(fail(error.statusCode, error.message));
   }
 };
-const updateDepartment = async (req: Request, res: Response) => {
+const deleteHoliday = async (req: Request, res: Response) => {
   try {
-    const result = await departmentService.updateDepartment(req);
+    const result = await holidayService.deleteHoliday(req);
 
     if (result instanceof Error) {
       throw result;
@@ -65,8 +65,8 @@ const updateDepartment = async (req: Request, res: Response) => {
 };
 
 export default {
-  getAllDepartment,
-  getDepartment,
-  createDepartment,
-  updateDepartment
+  getAllHoliday,
+  createHoliday,
+  updateHoliday,
+  deleteHoliday
 };

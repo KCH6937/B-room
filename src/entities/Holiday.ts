@@ -19,8 +19,8 @@ export class Holiday extends DateEntity {
   @Column({ type: 'tinyint', width: 1, default: 0 })
   signType: boolean;
 
-  @Column({ type: 'timestamp' })
-  signTime?: Date;
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  signTime: Date;
 
   @ManyToOne(() => User, user => user.holidays)
   user: User;

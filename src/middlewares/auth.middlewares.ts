@@ -46,13 +46,11 @@ const authJWT = (req: Request, res: Response, next: NextFunction) => {
  */
 const isAuthority = (req: Request, res: Response, next: NextFunction) => {
   const authority: number = req.userInfo.authority;
-
   if (authority !== ROLE.ROLE_ADMIN) {
     return res
       .status(statusCode.FORBIDDEN)
       .json(fail(statusCode.FORBIDDEN, message.FORBIDDEN));
   }
-
   next();
 };
 
