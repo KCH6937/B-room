@@ -2,12 +2,14 @@ import { Router } from 'express';
 import departmentRouter from '@routes/department/department.route';
 import userRouter from '@routes/user/user.route';
 import companyNoticeRouter from '@routes/companyNotice/companyNotice.route';
-import holidayRoute from '@routes/holiday/holiday.route';
+import holidayRouter from '@routes/holiday/holiday.route';
+import auth from '@middlewares/auth.middlewares';
 
-const router = Router();
+const router: Router = Router();
+
 router.use('/department', departmentRouter);
 router.use('/users', userRouter);
-router.use('/notices', companyNoticeRouter);
-router.use('/holiday', holidayRoute);
+router.use('/notices', auth.authJWT, companyNoticeRouter);
+router.use('/holiday', holidayRouter);
 
 export default router;

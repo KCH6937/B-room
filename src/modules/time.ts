@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 
-/**
+/** string -> Date
  *
  * @param startDate {string} 예시 : '2022-07-28'
  * @param endDate {string} 예시 : '2022-07-29'
@@ -16,7 +16,7 @@ const toTimestamp = (startDate: string, endDate: string) => {
     convertedEndDate
   };
 };
-/**
+/** 일 차이 계산
  *
  * @param startDate {string} 예시 : '2022-07-28'
  * @param endDate {string} 예시 : '2022-07-29'

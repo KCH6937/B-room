@@ -16,10 +16,9 @@ const getAllDepartment = async () => {
     const result = await userRepository
       .createQueryBuilder('u')
       .orderBy('d.id', 'ASC')
-      .select(['u.id', 'u.name', 'd.id', 'd.name'])
-      .leftJoin('u.companyDepartmentId', 'd')
+      .select(['u.id', 'u.name', 'd.id', 'd.name', 'd.createdAt'])
+      .leftJoin('u.companyDepartment', 'd')
       .getMany();
-    console.log('result: ', result);
 
     return success(statusCode.OK, message.SUCCESS, result);
   } catch (error: any) {
@@ -37,7 +36,7 @@ const getDepartment = async (request: any) => {
       .createQueryBuilder('u')
       .orderBy('u.id', 'ASC')
       .select(['u.id', 'u.name', 'd.id', 'd.name'])
-      .leftJoin('u.companyDepartmentId', 'd')
+      .leftJoin('u.companyDepartment', 'd')
       .where('d.id = :id', { id: departmentId })
       .getMany();
 

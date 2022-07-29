@@ -5,9 +5,10 @@ import message from '@modules/message';
 import { success } from '@modules/response';
 import setError from '@modules/setError';
 import statusCode from '@modules/statusCode';
-import { InsertResult, UpdateResult } from 'typeorm';
+import { DeleteResult, InsertResult, Repository, UpdateResult } from 'typeorm';
 
-const noticeRepository = AppDataSource.getRepository(CompanyNotice);
+const noticeRepository: Repository<CompanyNotice> =
+  AppDataSource.getRepository(CompanyNotice);
 
 const createNotice = async (noticeDto: ICompanyNotice) => {
   try {
@@ -18,7 +19,7 @@ const createNotice = async (noticeDto: ICompanyNotice) => {
       .values(noticeDto)
       .execute();
 
-    return success(statusCode.CREATED, message.CREATED, {
+    return success(statusCode.CREATED, message.SUCCESS, {
       id: notice.generatedMaps[0].id
     });
   } catch (error: any) {
@@ -53,7 +54,78 @@ const updateNotice = async (noticeDto: ICompanyNotice) => {
   }
 };
 
+const deleteNotice = async (id: number) => {
+  try {
+    const notice: DeleteResult = await noticeRepository
+      .createQueryBuilder()
+      .delete()
+      .from(CompanyNotice)
+      .where('id = :id', { id })
+      .execute();
+
+    if (notice?.affected === 0) {
+      return setError(statusCode.NOT_FOUND, message.NOT_FOUND);
+    }
+
+    return success(statusCode.OK, message.SUCCESS);
+  } catch (error: any) {
+    console.error(error);
+    return setError(
+      statusCode.INTERAL_SERVER_ERROR,
+      message.INTERNAL_SERVER_ERROR
+    );
+  }
+};
+
+const getNotices = async () => {
+  try {
+    const notices: CompanyNotice[] | [] = await noticeRepository
+      .createQueryBuilder('companynotice')
+      .select([
+        'companynotice.id',
+        'companynotice.title',
+        'companynotice.createdAt'
+      ])
+      .orderBy('companynotice.createdAt', 'DESC')
+      .getMany();
+
+    return success(statusCode.OK, message.SUCCESS, notices);
+  } catch (error: any) {
+    console.error(error);
+    return setError(
+      statusCode.INTERAL_SERVER_ERROR,
+      message.INTERNAL_SERVER_ERROR
+    );
+  }
+};
+
+const getNotice = async (id: number) => {
+  try {
+    const notice: CompanyNotice | null = await noticeRepository
+      .createQueryBuilder('companynotice')
+      .select([
+        'companynotice.id',
+        'companynotice.title',
+        'companynotice.content',
+        'companynotice.createdAt'
+      ])
+      .where('id = :id', { id })
+      .getOne();
+
+    return success(statusCode.OK, message.SUCCESS, notice);
+  } catch (error: any) {
+    console.error(error);
+    return setError(
+      statusCode.INTERAL_SERVER_ERROR,
+      message.INTERNAL_SERVER_ERROR
+    );
+  }
+};
+
 export default {
   createNotice,
-  updateNotice
+  updateNotice,
+  deleteNotice,
+  getNotices,
+  getNotice
 };

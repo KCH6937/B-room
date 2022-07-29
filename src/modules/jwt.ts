@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken';
 const jwtSecret: string = process.env.JWT_SECRET as string;
 
 //access token 발급
-export const signAccessToken = (userId: number, authority: boolean) => {
+export const signAccessToken = (userId: number, authority: number) => {
   const payload = {
     userId,
     authority

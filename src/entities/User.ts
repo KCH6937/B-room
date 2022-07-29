@@ -1,3 +1,4 @@
+import { UserCompanyChat } from './UserCompanyChat';
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -27,7 +28,7 @@ export class User extends DateEntity {
   password: string;
 
   @Column({ type: 'tinyint', width: 1, default: 0 })
-  authority: boolean;
+  authority: number;
 
   @OneToMany(() => TimeLog, timelog => timelog.user)
   timelogs: TimeLog[];
@@ -42,7 +43,10 @@ export class User extends DateEntity {
     () => CompanyDepartment,
     companyDepartment => companyDepartment.users
   )
-  companyDepartmentId: CompanyDepartment['id'];
+  companyDepartment: CompanyDepartment;
+
+  @OneToMany(() => UserCompanyChat, userCompanyChat => userCompanyChat.user)
+  userCompanyChats: UserCompanyChat[];
 
   @DeleteDateColumn({ type: 'timestamp' })
   deletedAt?: Date;

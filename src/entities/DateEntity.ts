@@ -4,6 +4,11 @@ export abstract class DateEntity {
   @CreateDateColumn()
   createdAt: Date;
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({
+    type: 'timestamp',
+    default: () => 'NULL',
+    onUpdate: 'CURRENT_TIMESTAMP(6)',
+    nullable: true
+  })
   updatedAt: Date;
 }
