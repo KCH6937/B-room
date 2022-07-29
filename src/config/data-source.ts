@@ -13,8 +13,7 @@ const AppDataSource = new DataSource({
   logging: false,
   entities: ['src/entities/*.ts'],
   migrations: ['src/migration/*.ts'],
-  subscribers: [],
-  timezone: 'Z'
+  subscribers: []
 });
 
 export default AppDataSource;

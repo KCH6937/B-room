@@ -1,7 +1,7 @@
 {
   "name": "B-room",
   "version": "1.0.0",
-  "description": "",
+  "description": "HR 데이터를 쉽고 편하게, 삐-룸",
   "main": "index.js",
   "scripts": {
     "dev": "nodemon",
@@ -9,17 +9,18 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/team-B-free/express-typescript-boilerplate.git"
+    "url": "https://github.com/team-B-free/B-room"
   },
   "keywords": [],
-  "author": "",
+  "author": "강채현, 김영우, 박성용, 최예진, 오주환",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/team-B-free/express-typescript-boilerplate/issues"
+    "url": "https://github.com/team-B-free/B-room/issues"
   },
-  "homepage": "https://github.com/team-B-free/express-typescript-boilerplate#readme",
+  "homepage": "https://github.com/team-B-free/B-room#readme",
   "dependencies": {
     "bcrypt": "^5.0.1",
+    "dayjs": "^1.11.4",
     "dotenv": "^16.0.1",
     "eslint-import-resolver-alias": "^1.1.2",
     "express": "^4.18.1",
