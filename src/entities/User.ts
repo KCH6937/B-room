@@ -28,7 +28,7 @@ export class User extends DateEntity {
   password: string;
 
   @Column({ type: 'tinyint', width: 1, default: 0 })
-  authority: boolean;
+  authority: number;
 
   @OneToMany(() => TimeLog, timelog => timelog.user)
   timelogs: TimeLog[];
