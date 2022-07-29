@@ -43,7 +43,7 @@ export class User extends DateEntity {
     () => CompanyDepartment,
     companyDepartment => companyDepartment.users
   )
-  companyDepartmentId: CompanyDepartment['id'];
+  companyDepartment: CompanyDepartment;
 
   @OneToMany(() => UserCompanyChat, userCompanyChat => userCompanyChat.user)
   userCompanyChats: UserCompanyChat[];
