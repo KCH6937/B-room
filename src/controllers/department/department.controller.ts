@@ -1,7 +1,6 @@
 import { Request, Response } from 'express';
 import { fail } from '@modules/response';
 import statusCode from '@modules/statusCode';
-import authService from '@services/auth/auth.service';
 import departmentService from '@services/department/department.service';
 
 const getAllDepartment = async (req: Request, res: Response) => {
@@ -36,8 +35,7 @@ const getDepartment = async (req: Request, res: Response) => {
 };
 const createDepartment = async (req: Request, res: Response) => {
   try {
-    // const authority = await authService.getAuthority(req.userInfo)
-    const result = await departmentService.createDepartment(req.body);
+    const result = await departmentService.createDepartment(req);
 
     if (result instanceof Error) {
       throw result;
@@ -52,7 +50,6 @@ const createDepartment = async (req: Request, res: Response) => {
 };
 const updateDepartment = async (req: Request, res: Response) => {
   try {
-    // const authority = await authService.getAuthority(req.userInfo)
     const result = await departmentService.updateDepartment(req);
 
     if (result instanceof Error) {

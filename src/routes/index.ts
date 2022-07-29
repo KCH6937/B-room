@@ -9,11 +9,11 @@ import auth from '@middlewares/auth.middlewares';
 
 const router: Router = Router();
 
-router.use('/department', departmentRouter);
+router.use('/department', auth.authJWT, departmentRouter);
 router.use('/users', userRouter);
 router.use('/notices', auth.authJWT, companyNoticeRouter);
 router.use('/chats', auth.authJWT, companyChatRoomRouter);
 router.use('/timelog', auth.authJWT, timelogRouter);
-router.use('/holiday', holidayRouter);
+router.use('/holiday', auth.authJWT, holidayRouter);
 
 export default router;

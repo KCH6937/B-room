@@ -11,27 +11,67 @@ const holidaysRepository = dataSource.getRepository(Holiday);
 
 const getAllHoliday = async (request: any) => {
   const { type } = request.query;
-  console.log('type: ', type);
+  const { id, authority } = request.userInfo;
+  if (authority === 0) {
+    //구성원 권한 조회
+    try {
+      const result = await holidaysRepository
+        .createQueryBuilder('h')
+        .orderBy('h.id', 'DESC')
+        .select([
+          'h.id',
+          'h.startDate',
+          'h.endDate',
+          'h.holidaySum',
+          'u.id',
+          'u.name',
+          'u.email'
+        ])
+        .leftJoin('h.user', 'u')
+        .where('h.signType = :type', { type })
+        .andWhere('h.user = :user', { user: id })
+        .getMany();
 
-  try {
-    const result = await holidaysRepository
-      .createQueryBuilder('h')
-      .orderBy('h.id', 'DESC')
-      .select(['h.id', 'h.startDate', 'h.endDate', 'h.holidaySum'])
-      .where('h.signType = :type', { type })
-      .andWhere('h.user = :user', { user: 1 })
-      .getMany();
+      return success(statusCode.OK, message.SUCCESS, result);
+    } catch (error: any) {
+      return setError(
+        statusCode.INTERAL_SERVER_ERROR,
+        message.INTERNAL_SERVER_ERROR
+      );
+    }
+  } else if (authority === 1) {
+    //관리자 권한 조회
+    try {
+      const result = await holidaysRepository
+        .createQueryBuilder('h')
+        .orderBy('h.id', 'DESC')
+        .select([
+          'h.id',
+          'h.startDate',
+          'h.endDate',
+          'h.holidaySum',
+          'u.id',
+          'u.name',
+          'u.email'
+        ])
+        .leftJoin('h.user', 'u')
+        .where('h.signType = :type', { type })
+        .getMany();
 
-    return success(statusCode.OK, message.SUCCESS, result);
-  } catch (error: any) {
-    return setError(
-      statusCode.INTERAL_SERVER_ERROR,
-      message.INTERNAL_SERVER_ERROR
-    );
+      return success(statusCode.OK, message.SUCCESS, result);
+    } catch (error: any) {
+      return setError(
+        statusCode.INTERAL_SERVER_ERROR,
+        message.INTERNAL_SERVER_ERROR
+      );
+    }
+  } else {
+    return setError(statusCode.BAD_REQUEST, message.BAD_REQUEST);
   }
 };
-const createHoliday = async (requestBody: any) => {
-  const { startDate, endDate }: HolidayDto = requestBody;
+const createHoliday = async (request: any) => {
+  const { startDate, endDate }: HolidayDto = request.body;
+  const { id } = request.userInfo;
 
   const { convertedStartDate, convertedEndDate } = toTimestamp(
     startDate,
@@ -47,7 +87,8 @@ const createHoliday = async (requestBody: any) => {
       .values({
         startDate: convertedStartDate,
         endDate: convertedEndDate,
-        holidaySum: dayDifference
+        holidaySum: dayDifference,
+        user: { id }
       })
       .execute();
 
@@ -64,56 +105,61 @@ const createHoliday = async (requestBody: any) => {
 const updateHoliday = async (request: any) => {
   const { id: holidayId } = request.params;
   const { startDate, endDate, signType }: HolidayDto = request.body;
+  const { authority } = request.userInfo;
   const { convertedStartDate, convertedEndDate } = toTimestamp(
     startDate,
     endDate
   );
   const dayDifference = getDayDifference(startDate, endDate);
 
-  //구성원 : 휴가 수정 신청
-  // try {
-  //   await holidaysRepository
-  //     .createQueryBuilder()
-  //     .update(Holiday)
-  //     .set({
-  //       startDate: convertedStartDate,
-  //       endDate: convertedEndDate,
-  //       holidaySum: dayDifference,
-  //     })
-  //     .where('id = :id', { id: holidayId })
-  //     .execute();
+  if (authority === 0) {
+    //구성원 : 휴가 수정 신청
+    try {
+      await holidaysRepository
+        .createQueryBuilder()
+        .update(Holiday)
+        .set({
+          startDate: convertedStartDate,
+          endDate: convertedEndDate,
+          holidaySum: dayDifference
+        })
+        .where('id = :id', { id: holidayId })
+        .execute();
 
-  //   return success(statusCode.OK, message.SUCCESS);
-  // } catch (error: any) {
-  //   return setError(
-  //     statusCode.INTERAL_SERVER_ERROR,
-  //     message.INTERNAL_SERVER_ERROR
-  //   );
-  // }
-  //관리자 : 휴가 승인 / 거부
-  try {
-    await holidaysRepository
-      .createQueryBuilder()
-      .update(Holiday)
-      .set({
-        startDate: convertedStartDate,
-        endDate: convertedEndDate,
-        holidaySum: dayDifference,
-        signType
-      })
-      .where('id = :id', { id: holidayId })
-      .execute();
+      return success(statusCode.OK, message.SUCCESS);
+    } catch (error: any) {
+      return setError(
+        statusCode.INTERAL_SERVER_ERROR,
+        message.INTERNAL_SERVER_ERROR
+      );
+    }
+  } else if (authority === 1) {
+    //관리자 : 휴가 승인 / 거부
+    try {
+      await holidaysRepository
+        .createQueryBuilder()
+        .update(Holiday)
+        .set({
+          startDate: convertedStartDate,
+          endDate: convertedEndDate,
+          holidaySum: dayDifference,
+          signType
+        })
+        .where('id = :id', { id: holidayId })
+        .execute();
 
-    return success(statusCode.OK, message.SUCCESS);
-  } catch (error: any) {
-    return setError(
-      statusCode.INTERAL_SERVER_ERROR,
-      message.INTERNAL_SERVER_ERROR
-    );
+      return success(statusCode.OK, message.SUCCESS);
+    } catch (error: any) {
+      return setError(
+        statusCode.INTERAL_SERVER_ERROR,
+        message.INTERNAL_SERVER_ERROR
+      );
+    }
+  } else {
+    return setError(statusCode.BAD_REQUEST, message.BAD_REQUEST);
   }
 };
 const deleteHoliday = async (request: any) => {
-  //로그인된 유저id로 auth 검사
   const { id: holidayId } = request.params;
 
   try {

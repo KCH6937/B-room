@@ -12,10 +12,8 @@ const AppDataSource = new DataSource({
   synchronize: process.env.NODE_ENV === 'development',
   logging: false,
   entities: ['src/entities/*.ts'],
-  timezone: 'Z',
   migrations: ['src/migration/*.ts'],
-  subscribers: [],
-  timezone: 'Z'
+  subscribers: []
 });
 
 export default AppDataSource;

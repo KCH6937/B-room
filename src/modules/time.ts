@@ -7,9 +7,9 @@ import dayjs from 'dayjs';
  * @returns convertedStartDate {object} 예시 : 2022-07-27T15:00:00.000Z
  * @returns convertedEndDate {object} 예시 : 2022-07-28T15:00:00.000Z
  */
-const toTimestamp = (startDate: string, endDate: string) => {
-  const convertedStartDate = dayjs(startDate).toDate();
-  const convertedEndDate = dayjs(endDate).toDate();
+const toTimestamp = (startDate: any, endDate: string) => {
+  const convertedStartDate = dayjs(startDate).format();
+  const convertedEndDate = dayjs(endDate).format();
 
   return {
     convertedStartDate,
