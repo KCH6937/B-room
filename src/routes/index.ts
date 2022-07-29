@@ -10,6 +10,6 @@ const router: Router = Router();
 router.use('/department', departmentRouter);
 router.use('/users', userRouter);
 router.use('/notices', auth.authJWT, companyNoticeRouter);
-router.use('/chats', companyChatRouter);
+router.use('/chats', auth.authJWT, companyChatRouter);
 
 export default router;

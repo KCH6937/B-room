@@ -9,7 +9,7 @@ import statusCode from '@modules/statusCode';
 
 const createChatRoom = async (req: Request, res: Response) => {
   const createChatRoomInputDto: CreateChatRoomInputDto = req.body;
-  const { userId } = req.body; //TODO: jwt 처리 구조 달라질 시 변경 필요
+  const { id: userId } = req.userInfo;
 
   const createChatRoomDto: CreateChatRoomDto = {
     title: createChatRoomInputDto.title,

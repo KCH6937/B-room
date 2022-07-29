@@ -7,7 +7,6 @@ import { User } from '@entities/User';
 import { ROLE } from '@modules/role';
 
 const authJWT = (req: Request, res: Response, next: NextFunction) => {
-  console.log('asdfsdfa');
   let token: string = '';
   if (req.headers['authorization']) {
     token = req.headers['authorization']!.split('Bearer ').reverse()[0];

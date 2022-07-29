@@ -3,6 +3,6 @@ import companyChatController from '@controllers/companyChatRoom/companyChatRoom.
 
 const router: Router = Router();
 
-router.post('/', companyChatController.createChatRoom); //TODO: jwt middleware 추가 필요
+router.post('/', companyChatController.createChatRoom);
 
 export default router;

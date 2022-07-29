@@ -12,8 +12,7 @@ const companyChatRoomRepository = AppDataSource.getRepository(CompanyChatRoom);
 const userCompanyChatRepository = AppDataSource.getRepository(UserCompanyChat);
 
 const createChatRoom = async (createChatRoomDto: CreateChatRoomDto) => {
-  let { title, userId } = createChatRoomDto;
-  userId = 1; //TODO: jwt middleware 추가 후 삭제예정
+  const { title, userId } = createChatRoomDto;
   try {
     const createCompanyChatRoom: InsertResult = await companyChatRoomRepository
       .createQueryBuilder()
