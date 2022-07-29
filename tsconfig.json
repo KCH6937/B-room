@@ -26,7 +26,7 @@
       "@routes/*": ["src/routes/*"],
       "@interfaces/*": ["src/interfaces/*"],
       "@modules/*": ["src/modules/*"],
-      "@middlewares/*": ["src/middlwares/*"]
+      "@middlewares/*": ["src/middlewares/*"]
     },
     "strictPropertyInitialization": false
   },
