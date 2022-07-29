@@ -1,9 +1,10 @@
 import { Request, Response } from 'express';
 import { fail } from '@modules/response';
 import userService from '@services/user/user.service';
+import { CreateUserDto, LoginUserDto } from '@interfaces/user/user.dto';
 
 const register = async (req: Request, res: Response) => {
-  const { email, password, name, department } = req.body;
+  const { email, password, name, department }: CreateUserDto = req.body;
   try {
     const result = await userService.register({
       email,
@@ -25,7 +26,7 @@ const register = async (req: Request, res: Response) => {
 };
 
 const login = async (req: Request, res: Response) => {
-  const { email, password } = req.body;
+  const { email, password }: LoginUserDto = req.body;
   try {
     const result = await userService.login({
       email,
@@ -44,10 +45,11 @@ const login = async (req: Request, res: Response) => {
   }
 };
 
-const editUser = async (req: Request, res: Response) => {
-  const { userId: id, name, password, department } = req.body;
+const updateUser = async (req: Request, res: Response) => {
+  const { id } = req.userInfo;
+  const { name, password, department } = req.body;
   try {
-    const result = await userService.editUser({
+    const result = await userService.updateUser({
       id,
       name,
       password,
@@ -67,9 +69,26 @@ const editUser = async (req: Request, res: Response) => {
 };
 
 const deleteUser = async (req: Request, res: Response) => {
-  const { userId } = req.body;
+  const { id: userId } = req.userInfo;
   try {
     const result = await userService.deleteUser(userId);
+
+    if (result instanceof Error) {
+      throw result;
+    }
+
+    res.status(result.status).send(result);
+  } catch (error: any) {
+    return res
+      .status(error.statusCode)
+      .send(fail(error.statusCode, error.message));
+  }
+};
+
+const getUserAbout = async (req: Request, res: Response) => {
+  const { userId } = req.params;
+  try {
+    const result = await userService.getUserAbout(Number(userId));
 
     if (result instanceof Error) {
       throw result;
@@ -86,6 +105,7 @@ const deleteUser = async (req: Request, res: Response) => {
 export default {
   register,
   login,
-  editUser,
+  getUserAbout,
+  updateUser,
   deleteUser
 };
