@@ -1,7 +1,4 @@
-# logo
-
-<br/>
-
+![broom-logo](https://user-images.githubusercontent.com/77667889/181674803-70197c69-9bdb-41c0-93c7-9822ced7b9c8.png)
 ## _HR 데이터를 쉽고 편하게!_
 
 <br/>
@@ -50,6 +47,7 @@ CI/CD : ![actions](https://img.shields.io/badge/-GitHub_Actions-002F67)
 <br/><br/><br/>
 
 # Ⅳ. ERD
+![ERD](https://user-images.githubusercontent.com/77667889/181674748-de0bf383-4103-42c5-aed8-750ad3eddaab.png)
 
 <br/><br/><br/>
 
