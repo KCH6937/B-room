@@ -18,9 +18,9 @@ export class CompanyChatRoom extends DateEntity {
 
   @OneToMany(
     () => UserCompanyChat,
-    userCompanyChat => userCompanyChat.companyChatRooms
+    userCompanyChat => userCompanyChat.companyChatRoom
   )
-  userCompanyChat: UserCompanyChat;
+  userCompanyChats: UserCompanyChat[];
 
   @DeleteDateColumn({ type: 'timestamp' })
   deletedAt: string;
