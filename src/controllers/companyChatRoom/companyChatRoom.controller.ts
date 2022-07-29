@@ -1,11 +1,22 @@
 import { Request, Response } from 'express';
+import statusCode from '@modules/statusCode';
 import { fail } from '@modules/response';
-import companyChatService from '@services/companyChatRoom/companyChatRoom.service';
 import {
   CreateChatRoomInputDto,
   CreateChatRoomDto
 } from '@interfaces/companyChat/createChatRoom.dto';
-import statusCode from '@modules/statusCode';
+import companyChatRoomService from '@services/companyChatRoom/companyChatRoom.service';
+
+const getChatRoomsInfo = async (req: Request, res: Response) => {
+  try {
+    const result = await companyChatRoomService.getChatRoomsInfo();
+    return res.status(statusCode.OK).json(result);
+  } catch (error: any) {
+    return res
+      .status(error.statusCode)
+      .json(fail(error.statusCode, error.message));
+  }
+};
 
 const createChatRoom = async (req: Request, res: Response) => {
   const createChatRoomInputDto: CreateChatRoomInputDto = req.body;
@@ -16,7 +27,9 @@ const createChatRoom = async (req: Request, res: Response) => {
     userId
   };
   try {
-    const result = await companyChatService.createChatRoom(createChatRoomDto);
+    const result = await companyChatRoomService.createChatRoom(
+      createChatRoomDto
+    );
 
     if (result instanceof Error) {
       throw result;
@@ -30,5 +43,6 @@ const createChatRoom = async (req: Request, res: Response) => {
 };
 
 export default {
+  getChatRoomsInfo,
   createChatRoom
 };

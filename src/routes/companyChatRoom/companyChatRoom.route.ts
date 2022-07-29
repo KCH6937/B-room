@@ -1,8 +1,9 @@
 import { Router } from 'express';
-import companyChatController from '@controllers/companyChatRoom/companyChatRoom.controller';
+import companyChatRoomController from '@controllers/companyChatRoom/companyChatRoom.controller';
 
 const router: Router = Router();
 
-router.post('/', companyChatController.createChatRoom);
+router.get('/', companyChatRoomController.getChatRoomsInfo);
+router.post('/', companyChatRoomController.createChatRoom);
 
 export default router;
