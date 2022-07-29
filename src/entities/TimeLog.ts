@@ -12,6 +12,9 @@ export class TimeLog {
   @Column({ type: 'timestamp', default: () => 'NULL', nullable: true })
   toWork: Date;
 
+  @Column({ type: 'int', nullable: true })
+  workTime: number;
+
   @ManyToOne(() => User, user => user.timelogs)
   user: User;
 }

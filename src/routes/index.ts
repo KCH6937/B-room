@@ -2,7 +2,7 @@ import { Router } from 'express';
 import departmentRouter from '@routes/department/department.route';
 import userRouter from '@routes/user/user.route';
 import companyNoticeRouter from '@routes/companyNotice/companyNotice.route';
-import companyChatroomRouter from '@routes/companyChatRoom/companyChatRoom.route';
+import companyChatroomRouter from '@routes/companyChatroom/companyChatroom.route';
 import auth from '@middlewares/auth.middlewares';
 import timelogRouter from '@routes/timelog/timelog.route';
 
@@ -13,6 +13,5 @@ router.use('/users', userRouter);
 router.use('/chats', companyChatroomRouter);
 router.use('/notices', auth.authJWT, companyNoticeRouter);
 router.use('/timelog', auth.authJWT, timelogRouter);
-
 
 export default router;
