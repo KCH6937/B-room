@@ -63,7 +63,7 @@ const getTotalHour = (from: Date, to: Date) => {
   const minute: number = getMinute(totalMillisecond);
   const second: number = getSecond(totalMillisecond);
 
-  return `${hour}H`;
+  return hour;
 };
 
 export default {

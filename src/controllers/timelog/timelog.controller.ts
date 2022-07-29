@@ -1,4 +1,3 @@
-import message from '@modules/message';
 import { fail } from '@modules/response';
 import statusCode from '@modules/statusCode';
 import timelogService from '@services/timelog/timelog.service';
@@ -31,8 +30,16 @@ const updateToWork = async (req: Request, res: Response) => {
       throw result;
     }
 
-    const timelog = await timelogService.getDailyTime(id);
+    const timelog = await timelogService.getTimeLog(id);
     if (timelog instanceof Error) {
+      throw result;
+    }
+
+    const setTimeWork = await timelogService.setWorkTime(
+      id,
+      timelog.data.timeWork
+    );
+    if (setTimeWork instanceof Error) {
       throw result;
     }
 
@@ -44,7 +51,34 @@ const updateToWork = async (req: Request, res: Response) => {
   }
 };
 
+const getTimeLog = async (req: Request, res: Response) => {
+  const { period } = req.query;
+  const { userInfo: user } = req;
+  let result;
+
+  try {
+    if (period === 'weekly') {
+      result = await timelogService.getWeeklyTime(user);
+    } else if (period === 'monthly') {
+      result = await timelogService.getMonthlyTime(user);
+    } else {
+      result = await timelogService.getDailyTime(user);
+    }
+
+    if (result instanceof Error) {
+      throw result;
+    }
+
+    return res.status(statusCode.OK).json(result);
+  } catch (error: any) {
+    return res
+      .status(error.statusCode)
+      .json(fail(error.statusCode, error.message));
+  }
+};
+
 export default {
   createFromWork,
-  updateToWork
+  updateToWork,
+  getTimeLog
 };
