@@ -1,13 +1,4 @@
-import { toTimestamp, getDayDifference } from '../../modules/time';
-
-describe('toTimestamp', () => {
-  test('timestamp형식 string으로 변환되야함', () => {
-    expect(toTimestamp('20220728', '20220729')).toEqual({
-      convertedStartDate: '2022-07-28T00:00:00+09:00',
-      convertedEndDate: '2022-07-29T00:00:00+09:00'
-    });
-  });
-});
+import { getDayDifference } from '../../modules/time';
 
 describe('getDayDifference', () => {
   test('1을 반환해야함', () => {
