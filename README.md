@@ -32,7 +32,7 @@ B-room 하나면 충분합니다!
 
 ## Ⅴ. 업무 분업
 | 이름 | 담당 API | 담당 기능 | 코드 보러 가기 |
-| --------------- | --------------- | --------------- | --------------- |
+| :---------------: | :---------------: | :---------------: | :---------------: |
 | 강채현 | /users | 사용자 | [user.service](https://github.com/team-B-free/B-room/blob/main/src/services/user/user.service.ts) |
 | 김영우 | /timelog <br/> /notices | 출퇴근 <br/> 공지사항 | [timelog.service](https://github.com/team-B-free/B-room/blob/main/src/services/timelog/timelog.service.ts) <br/> [notice.service](https://github.com/team-B-free/B-room/blob/main/src/services/companyNotice/companyNotice.service.ts) |
 | 박성용 | /chats | 채팅 | [chat.service](https://github.com/team-B-free/B-room/blob/main/src/services/companyChatRoom/companyChatRoom.service.ts) |
@@ -65,7 +65,7 @@ CI/CD : ![actions](https://img.shields.io/badge/-GitHub_Actions-002F67)
 
 # Ⅷ. 프로젝트 기록
 
-- [Broom wiki](https://github.com/team-B-free/B-room/wiki)에서 자세히 확인 할 수 있습니다.
+- [Broom wiki](https://github.com/team-B-free/B-room/wiki)에서 자세히 확인할 수 있습니다.
 
 <br/><br/>
 
