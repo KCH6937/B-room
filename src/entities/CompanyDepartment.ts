@@ -10,6 +10,6 @@ export class CompanyDepartment extends DateEntity {
   @Column({ length: 45 })
   name: string;
 
-  @OneToMany(() => User, user => user.companyDepartmentId)
+  @OneToMany(() => User, user => user.companyDepartment)
   users: User[];
 }
