@@ -1,8 +1,11 @@
 import express from 'express';
 import { createServer } from 'http';
 import { Server } from 'socket.io';
-import AppDataSource from '@config/data-source';
+import cors from 'cors';
+import swaggerUi from 'swagger-ui-express';
+import YAML from 'yamljs';
 import 'dotenv/config';
+import AppDataSource from '@config/data-source';
 import routes from '@routes/index';
 import {
   ServerToClientEvents,
@@ -15,11 +18,19 @@ const httpServer = createServer(app);
 
 const io = new Server<ClientToServerEvents, ServerToClientEvents>(httpServer);
 
+const specs = YAML.load('build/swagger.yaml');
+
 AppDataSource.initialize()
   .then(async () => {
     app.use(express.urlencoded({ extended: true }));
     app.use(express.json());
+    app.use(cors());
 
+    app.use(
+      '/api-docs',
+      swaggerUi.serve,
+      swaggerUi.setup(specs, { explorer: true })
+    );
     app.use('/api', routes);
 
     httpServer

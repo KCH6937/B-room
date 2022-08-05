@@ -1,0 +1,89 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: B-room API docs
+  description: 삐룸 API 문서입니다
+servers:
+  - url: 'http://localhost:3000/api'
+tags:
+  - name: User
+    description: 유저 관련 API
+  - name: Department
+    description: 부서 관련 API
+  - name: Notice
+    description: 공지 관련 API
+  - name: TimeLog
+    description: 출퇴근 관련 API
+  - name: Holiday
+    description: 휴가 관련 API
+  - name: Chat
+    description: 채팅 관련 API
+paths:
+  /users/register:
+    $ref: './paths/user/register.yaml'
+  /users/login:
+    $ref: './paths/user/login.yaml'
+  /users/{userId}:
+    $ref: './paths/user/getUser.yaml'
+  /users:
+    $ref: './paths/user/userWithParam.yaml'
+  /department:
+    $ref: './paths/department/department.yaml'
+  /department/{id}:
+    $ref: './paths/department/departmentWithParam.yaml'
+  /notices:
+    $ref: './paths/notice/notice.yaml'
+  /notices/{id}:
+    $ref: './paths/notice/noticeWithParam.yaml'
+  /timelog:
+    $ref: './paths/timelog/timelog.yaml'
+  /timelog/{id}:
+    $ref: './paths/timelog/timelogWithParam.yaml'
+  /holiday:
+    $ref: './paths/holiday/holiday.yaml'
+  /holiday/{id}:
+    $ref: './paths/holiday/holidayWithParam.yaml'
+  /chats:
+    $ref: './paths/chat/chat.yaml'
+components:
+  responses:
+    OK:
+      description: 성공
+      content:
+        application/json:
+          schema:
+            properties:
+              isSuccess:
+                type: boolean
+                example: true
+              code:
+                type: number
+                example: 200
+              message:
+                type: string
+                example: 성공
+    CREATED:
+      description: 성공
+      content:
+        application/json:
+          schema:
+            properties:
+              isSuccess:
+                type: boolean
+                example: true
+              code:
+                type: number
+                example: 201
+              message:
+                type: string
+                example: 성공
+    FORBIDDEN:
+      description: 관리자만 접근 가능합니다
+    Unauthorized:
+      description: 토큰 필요 or 토큰 만료 or 토큰 검증 실패
+    NOT_FOUND:
+      description: 존재하지 않는 자원
+    BadRequest:
+      description: 잘못된 요청
+    InternalServerError:
+      description: 서버 내부 에러

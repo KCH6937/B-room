@@ -1,0 +1,74 @@
+post:
+  tags:
+    - Notice
+  summary: 공지사항 생성
+  parameters:
+    - in: header
+      name: authorization
+      schema:
+        type: string
+      required: true
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          properties:
+            title:
+              type: string
+              example: '공지사항 제목'
+            content:
+              type: string
+              example: '공지사항 내용'
+  responses:
+    '201':
+      $ref: '../../openapi.yaml#/components/responses/CREATED'
+    '403':
+      $ref: '../../openapi.yaml#/components/responses/FORBIDDEN'
+    '503':
+      $ref: '../../openapi.yaml#/components/responses/InternalServerError'
+
+get:
+  tags:
+    - Notice
+  summary: 공지사항 전체 조회
+  parameters:
+    - in: header
+      name: authorization
+      schema:
+        type: string
+      required: true
+  responses:
+    '200':
+      description: 성공
+      content:
+        application/json:
+          schema:
+            properties:
+              isSuccess:
+                type: boolean
+                example: true
+              code:
+                type: number
+                example: 200
+              message:
+                type: string
+                example: 성공
+              data:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: number
+                      example: 1
+                    title:
+                      type: string
+                      example: 공지사항 제목
+                    createdAt:
+                      type: string
+                      example: '2022-07-28T08:40:59.0000Z'
+    '401':
+      $ref: '../../openapi.yaml#/components/responses/Unauthorized'
+    '503':
+      $ref: '../../openapi.yaml#/components/responses/InternalServerError'

@@ -1,0 +1,80 @@
+get:
+  tags:
+    - Department
+  summary: 부서 상세 조회
+  parameters:
+    - in: header
+      name: authorization
+      schema:
+        type: string
+      required: true
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+        minimum: 1
+  responses:
+    '200':
+      description: 성공
+      content:
+        application/json:
+          schema:
+            properties:
+              isSuccess:
+                type: boolean
+                example: true
+              code:
+                type: number
+                example: 200
+              message:
+                type: string
+                example: 성공
+              data:
+                type: object
+                properties:
+                  id:
+                    type: number
+                    minimum: 1
+                    example: 1
+                    description: 유저 id
+                  name:
+                    type: string
+                    example: 김삐룸
+                  companyDepartment:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                        example: '개발'
+    '401':
+      $ref: '../../openapi.yaml#/components/responses/Unauthorized'
+    '503':
+      $ref: '../../openapi.yaml#/components/responses/InternalServerError'
+
+patch:
+  tags:
+    - Department
+  summary: 부서 수정
+  parameters:
+    - in: header
+      name: authorization
+      schema:
+        type: string
+      required: true
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          properties:
+            name:
+              type: string
+              example: 서버 개발팀
+  responses:
+    '200':
+      $ref: '../../openapi.yaml#/components/responses/OK'
+    '401':
+      description: 인증안됨
+    '503':
+      $ref: '../../openapi.yaml#/components/responses/InternalServerError'

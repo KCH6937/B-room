@@ -1,0 +1,26 @@
+post:
+  tags:
+    - User
+  summary: 회원가입
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          properties:
+            email:
+              type: string
+              example: 'hello@naver.com'
+            password:
+              type: string
+              example: '1234!'
+            department:
+              type: string
+              example: '개발'
+  responses:
+    '201':
+      $ref: '../../openapi.yaml#/components/responses/CREATED'
+    '403':
+      description: 이미 존재하는 이메일 or 존재하지 않는 부서명
+    '503':
+      $ref: '../../openapi.yaml#/components/responses/InternalServerError'

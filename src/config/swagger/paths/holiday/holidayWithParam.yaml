@@ -1,0 +1,59 @@
+patch:
+  tags:
+    - Holiday
+  summary: 휴가 수정
+  parameters:
+    - in: header
+      name: authorization
+      schema:
+        type: string
+      required: true
+    - in: path
+      name: id
+      required: true
+      schema:
+        type: integer
+        minimum: 1
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          properties:
+            startDate:
+              type: number
+              example: 20220501
+            endDate:
+              type: number
+              example: 20220502
+  responses:
+    '200':
+      $ref: '../../openapi.yaml#/components/responses/OK'
+    '401':
+      $ref: '../../openapi.yaml#/components/responses/Unauthorized'
+    '503':
+      $ref: '../../openapi.yaml#/components/responses/InternalServerError'
+
+delete:
+  tags:
+    - Holiday
+  summary: 휴가 삭제
+  parameters:
+    - in: header
+      name: authorization
+      schema:
+        type: string
+      required: true
+    - in: path
+      name: id
+      required: true
+      schema:
+        type: integer
+        minimum: 1
+  responses:
+    '200':
+      $ref: '../../openapi.yaml#/components/responses/OK'
+    '401':
+      $ref: '../../openapi.yaml#/components/responses/Unauthorized'
+    '503':
+      $ref: '../../openapi.yaml#/components/responses/InternalServerError'
