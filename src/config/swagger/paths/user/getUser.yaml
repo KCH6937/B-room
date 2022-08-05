@@ -1,0 +1,52 @@
+get:
+  tags:
+    - User
+  summary: 유저 조회
+  parameters:
+    - in: header
+      name: authorization
+      schema:
+        type: string
+      required: true
+    - name: userId
+      in: path
+      required: true
+      schema:
+        type: integer
+        minimum: 1
+  responses:
+    '200':
+      description: 성공
+      content:
+        application/json:
+          schema:
+            properties:
+              isSuccess:
+                type: boolean
+                example: true
+              code:
+                type: number
+                example: 200
+              message:
+                type: string
+                example: 성공
+              data:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    example: 김삐룸
+                  email:
+                    type: string
+                    example: 'kimbroom@naver.com'
+                  department:
+                    type: string
+                    example: '개발'
+    '401':
+      $ref: '../../openapi.yaml#/components/responses/Unauthorized'
+    '403':
+      description: 존재하지 않는 회원정보
+    '404':
+      $ref: '../../openapi.yaml#/components/responses/NOT_FOUND'
+    '503':
+      $ref: '../../openapi.yaml#/components/responses/InternalServerError'

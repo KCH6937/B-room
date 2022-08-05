@@ -1,0 +1,117 @@
+patch:
+  tags:
+    - Notice
+  summary: 공지 수정
+  parameters:
+    - in: header
+      name: authorization
+      schema:
+        type: string
+      required: true
+    - in: path
+      name: id
+      required: true
+      schema:
+        type: integer
+        minimum: 1
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          properties:
+            title:
+              type: string
+              example: 공지사항 제목 수정
+            content:
+              type: string
+              example: 공지사항 내용 수정
+  responses:
+    '200':
+      $ref: '../../openapi.yaml#/components/responses/OK'
+    '403':
+      $ref: '../../openapi.yaml#/components/responses/FORBIDDEN'
+    '404':
+      $ref: '../../openapi.yaml#/components/responses/NOT_FOUND'
+    '503':
+      $ref: '../../openapi.yaml#/components/responses/InternalServerError'
+
+get:
+  tags:
+    - Notice
+  summary: 공지 상세 조회
+  parameters:
+    - in: header
+      name: authorization
+      schema:
+        type: string
+      required: true
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+        minimum: 1
+  responses:
+    '200':
+      description: 성공
+      content:
+        application/json:
+          schema:
+            properties:
+              isSuccess:
+                type: boolean
+                example: true
+              code:
+                type: number
+                example: 200
+              message:
+                type: string
+                example: 성공
+              data:
+                type: object
+                properties:
+                  noticeId:
+                    type: number
+                    example: 1
+                  title:
+                    type: string
+                    example: 공지사항 제목
+                  content:
+                    type: string
+                    example: 공지사항 내용
+                  createdAt:
+                    type: string
+                    example: '2022-07-28T08:40:59.0000Z'
+    '403':
+      $ref: '../../openapi.yaml#/components/responses/FORBIDDEN'
+    '404':
+      $ref: '../../openapi.yaml#/components/responses/NOT_FOUND'
+    '503':
+      $ref: '../../openapi.yaml#/components/responses/InternalServerError'
+
+delete:
+  tags:
+    - Notice
+  summary: 공지 상세 삭제
+  parameters:
+    - in: header
+      name: authorization
+      schema:
+        type: string
+      required: true
+    - in: path
+      name: id
+      required: true
+      schema:
+        type: integer
+        minimum: 1
+  responses:
+    '200':
+      $ref: '../../openapi.yaml#/components/responses/OK'
+    '403':
+      $ref: '../../openapi.yaml#/components/responses/FORBIDDEN'
+    '404':
+      $ref: '../../openapi.yaml#/components/responses/NOT_FOUND'
+    '503':
+      $ref: '../../openapi.yaml#/components/responses/InternalServerError'

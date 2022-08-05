@@ -1,0 +1,52 @@
+patch:
+  tags:
+    - User
+  summary: 회원정보 수정
+  parameters:
+    - in: header
+      name: authorization
+      schema:
+        type: string
+      required: true
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          properties:
+            name:
+              type: string
+              example: 최삐룸
+            password:
+              type: string
+              example: 1234!
+            department:
+              type: string
+              example: 기획
+  responses:
+    '200':
+      $ref: '../../openapi.yaml#/components/responses/OK'
+    '401':
+      $ref: '../../openapi.yaml#/components/responses/Unauthorized'
+    '403':
+      description: 존재하지 않는 회원정보 or 존재하지 않는 부서명
+    '503':
+      $ref: '../../openapi.yaml#/components/responses/InternalServerError'
+
+delete:
+  tags:
+    - User
+  summary: 회원 탈퇴
+  parameters:
+    - in: header
+      name: authorization
+      schema:
+        type: string
+      required: true
+  responses:
+    '200':
+      $ref: '../../openapi.yaml#/components/responses/OK'
+    '401':
+      $ref: '../../openapi.yaml#/components/responses/Unauthorized'
+    '503':
+      $ref: '../../openapi.yaml#/components/responses/InternalServerError'

@@ -1,0 +1,51 @@
+patch:
+  tags:
+    - TimeLog
+  summary: 퇴근 등록
+  parameters:
+    - in: header
+      name: authorization
+      schema:
+        type: string
+      required: true
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+        minimum: 1
+  responses:
+    '200':
+      description: 성공
+      content:
+        application/json:
+          schema:
+            properties:
+              isSuccess:
+                type: boolean
+                example: true
+              code:
+                type: number
+                example: 200
+              message:
+                type: string
+                example: 성공
+              data:
+                type: object
+                properties:
+                  commuteId:
+                    type: number
+                    example: 1
+                  fromWork:
+                    type: string
+                    example: '2022-07-28T08:40:59.0000Z'
+                  toWork:
+                    type: string
+                    example: '2022-07-28T18:00:59.000Z'
+                  timeWork:
+                    type: number
+                    example: 9
+    '404':
+      $ref: '../../openapi.yaml#/components/responses/NOT_FOUND'
+    '503':
+      $ref: '../../openapi.yaml#/components/responses/InternalServerError'

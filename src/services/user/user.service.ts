@@ -80,7 +80,7 @@ const register = async (userDto: CreateUserDto) => {
       .values(userDto)
       .execute();
 
-    return success(statusCode.OK, message.SUCCESS);
+    return success(statusCode.CREATED, message.SUCCESS);
   } catch (error: any) {
     return setError(
       statusCode.SERVICE_UNAVAILABLE,
