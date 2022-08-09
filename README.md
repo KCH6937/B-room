@@ -1,7 +1,8 @@
 ![logo](https://user-images.githubusercontent.com/77667889/182810600-0ab83562-0dac-4a40-bafd-b4da3c8b3a9d.png)
 
 프로젝트명 : B-room <br/>
-배포 링크 : http://3.39.234.35:3000/api/
+배포 링크 : http://3.39.234.35:3000/api/  
+*회원가입 API 요청 시 부서명(department)은 **develope**로 지정해주시기 바랍니다.
 
 <br/>
 
