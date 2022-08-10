@@ -4,7 +4,7 @@ info:
   title: B-room API docs
   description: 삐룸 API 문서입니다
 servers:
-  - url: 'http://localhost:3000/api'
+  - url: 'http://3.39.234.35:3000/api'
 tags:
   - name: User
     description: 유저 관련 API
